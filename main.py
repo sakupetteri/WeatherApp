@@ -11,6 +11,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 def get_weather(city):
+    """Fetches the current and next day's weather of the specified city using the OpenWeatherMap API.
+
+    Args:
+        city (str): The name of the city for which the weather is to be fetched.
+
+    Returns:
+        dict: A dictionary with the current and next day's weather data. If an error occurs, returns a dictionary with an "error" key.
+    """
     url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&appid={WEATHER_API_KEY}"
     try:
         response = requests.get(url)
@@ -33,6 +41,16 @@ def get_weather(city):
         return {"error": str(e)}
 
 def get_municipality_description(city):
+    """
+    Fetches a description of the specified municipality using OpenAI's GPT-3.5-turbo model.
+
+    Args:
+        city (str): The name of the city for which the description is to be fetched.
+
+    Returns:
+        str: A text description of the municipality. If an error occurs, returns an error message.
+    """
+
     try:
         response = openai.Completion.create(
             model="gpt-3.5-turbo",
@@ -47,6 +65,14 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    """Render the main page with weather and description of the given city.
+
+    GET request: Render the page with empty variables.
+    POST request: Get the city name from the form data and call the
+    get_weather and get_municipality_description functions. If an error
+    occurred in the weather API, render the error page. Otherwise, render
+    the page with the weather and description data.
+    """
     weather = description = city = None
     if request.method == "POST":
         city = request.form["city"]

@@ -2,22 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather and Municipality Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e90ff;
+            color: white;
+            margin: 0;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            margin-right: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4682b4;
+        }
+
+        .weather-info, .municipality-description {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-info h2, .municipality-description h2 {
+            color: #1e90ff;
+        }
+
+        .weather-info p, .municipality-description p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .next-day {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+    </style>
 </head>
 <body>
     <h1>Weather and Municipality Info</h1>
-    <form method="POST">
-        <input type="text" name="city" placeholder="Enter Municipality" required>
-        <button type="submit">Get Info</button>
-    </form>
-    {% if weather %}
-        <h2>Weather in {{ city }}</h2>
-        <p>Current: {{ weather['current']['temp'] }}°C, {{ weather['current']['description'] }}</p>
-        <p>Next Day: {{ weather['next_day']['temp'] }}°C, {{ weather['next_day']['description'] }}</p>
-    {% endif %}
-    {% if description %}
-        <h2>About {{ city }}</h2>
-        <p>{{ description }}</p>
-    {% endif %}
+    <div class="container">
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter Municipality" required>
+            <button type="submit">Get Info</button>
+        </form>
+
+        {% if weather %}
+            <div class="weather-info">
+                <h2>Weather in {{ city }}</h2>
+                <div>
+                    <p>Current: {{ weather['current']['temp'] }}°C, {{ weather['current']['description'] }}</p>
+                    <img src="http://openweathermap.org/img/wn/{{ weather['current']['icon'] }}@2x.png" alt="Weather Icon" class="weather-icon">
+                </div>
+
+                <div class="next-day">
+                    <p>Next Day: {{ weather['next_day']['temp'] }}°C, {{ weather['next_day']['description'] }}</p>
+                    <img src="http://openweathermap.org/img/wn/{{ weather['next_day']['icon'] }}@2x.png" alt="Weather Icon" class="weather-icon">
+                </div>
+            </div>
+        {% endif %}
+
+        {% if description %}
+            <div class="municipality-description">
+                <h2>About {{ city }}</h2>
+                <p>{{ description }}</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
