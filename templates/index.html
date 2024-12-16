@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather and Municipality Info</title>
+</head>
+<body>
+    <h1>Weather and Municipality Info</h1>
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter Municipality" required>
+        <button type="submit">Get Info</button>
+    </form>
+    {% if weather %}
+        <h2>Weather in {{ city }}</h2>
+        <p>Current: {{ weather['current']['temp'] }}°C, {{ weather['current']['description'] }}</p>
+        <p>Next Day: {{ weather['next_day']['temp'] }}°C, {{ weather['next_day']['description'] }}</p>
+    {% endif %}
+    {% if description %}
+        <h2>About {{ city }}</h2>
+        <p>{{ description }}</p>
+    {% endif %}
+</body>
+</html>
